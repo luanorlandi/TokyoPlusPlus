@@ -5,9 +5,11 @@
  */
 package tokyo;
 
+import javax.swing.ImageIcon;
+
 /**
  *
- * @author 8531532
+ * @author Orlandi
  */
 public class Interface extends javax.swing.JFrame {
 
@@ -16,6 +18,9 @@ public class Interface extends javax.swing.JFrame {
      */
     public Interface() {
         initComponents();
+        this.setTitle("Tokyo++ - Menu");
+        this.setIconImage(new ImageIcon(getClass().getResource("/img/japan.png")).getImage()); 
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -27,23 +32,95 @@ public class Interface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        appText = new javax.swing.JLabel();
+        appImg = new javax.swing.JLabel();
+        appBackground = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuModalidade = new javax.swing.JMenu();
+        menuListarAtleta = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        appText.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 36)); // NOI18N
+        appText.setForeground(new java.awt.Color(153, 153, 153));
+        appText.setText("TOKYO++");
+
+        appImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/japan.png"))); // NOI18N
+
+        appBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background.jpg"))); // NOI18N
+
+        menuModalidade.setText("Modalidade");
+        menuModalidade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuModalidade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuModalidadeMousePressed(evt);
+            }
+        });
+        jMenuBar1.add(menuModalidade);
+
+        menuListarAtleta.setText("Listar Atletas");
+        menuListarAtleta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuListarAtleta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuListarAtletaMousePressed(evt);
+            }
+        });
+        jMenuBar1.add(menuListarAtleta);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(83, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(appImg)
+                        .addGap(77, 77, 77))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(appText, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(304, 304, 304))))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(appBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(appImg, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(appText)
+                .addGap(49, 49, 49))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 2, Short.MAX_VALUE)
+                    .addComponent(appBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 3, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void menuModalidadeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuModalidadeMousePressed
+        new Modalidade().setVisible(true);
+    }//GEN-LAST:event_menuModalidadeMousePressed
+
+    private void menuListarAtletaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuListarAtletaMousePressed
+        //new Relatorio().setVisible(true);
+    }//GEN-LAST:event_menuListarAtletaMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel appBackground;
+    private javax.swing.JLabel appImg;
+    private javax.swing.JLabel appText;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu menuListarAtleta;
+    private javax.swing.JMenu menuModalidade;
     // End of variables declaration//GEN-END:variables
 }

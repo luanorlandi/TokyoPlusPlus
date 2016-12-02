@@ -30,6 +30,11 @@ public class Main {
         } catch (Exception ex) {
             System.out.println("Fail to connect: " + ex.getMessage());
         }
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Interface().setVisible(true);
+            }
+        });
     }
-    
 }
