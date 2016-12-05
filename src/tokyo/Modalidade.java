@@ -5,7 +5,12 @@
  */
 package tokyo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,6 +18,9 @@ import javax.swing.ImageIcon;
  */
 public class Modalidade extends javax.swing.JFrame {
 
+    JTable tableEsporte = new javax.swing.JTable();
+    JTable tableModalidade = new javax.swing.JTable();
+    
     /**
      * Creates new form Modalidade
      */
@@ -21,6 +29,91 @@ public class Modalidade extends javax.swing.JFrame {
         this.setTitle("Tokyo++ - Modalidade");
         this.setIconImage(new ImageIcon(getClass().getResource("/img/japan.png")).getImage()); 
         this.setLocationRelativeTo(null);
+        
+        loadEsporte();
+    }
+    
+    private void loadEsporte() {
+        paneEsporte.setViewportView(tableEsporte);
+        tableEsporte.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Nome do Esporte", "Unidade"
+                }
+        ) {
+            Class[] types = new Class[]{
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean[]{
+                false, false
+            };
+        });
+        
+        try {
+            ResultSet resultSet = DatabaseConnection
+                    .getInstance()
+                    .select(scriptEsporte());
+                    
+            DefaultTableModel model = (DefaultTableModel) tableEsporte.getModel();
+            
+            while (resultSet.next()) {
+                model.addRow(new Object[]{
+                    resultSet.getString("nomeEsporte"),
+                    resultSet.getString("unidade")});
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private void loadModalidade() {
+        paneModalidade.setViewportView(tableModalidade);
+        tableModalidade.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Nome da Modalidade",
+                    "Nº máx. de Atletas",
+                    "Categoria",
+                    "Nome do Esporte"
+                }
+        ) {
+            Class[] types = new Class[]{
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false
+            };
+        });
+        
+        try {
+            ResultSet resultSet = DatabaseConnection
+                    .getInstance()
+                    .select(scriptModalidadeListar());
+                    
+            DefaultTableModel model = (DefaultTableModel) tableModalidade.getModel();
+            
+            while (resultSet.next()) {
+                model.addRow(new Object[]{
+                    resultSet.getString("nomeModalidade"),
+                    resultSet.getString("numeroMaximoAtletas"),
+                    resultSet.getString("categoria"),
+                    resultSet.getString("nomeEsporte")});
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private String scriptEsporte() {
+        return
+                "select * "
+                + "from esporte";
+    }
+    
+    private String scriptModalidadeListar() {
+        return
+                "select * "
+                + "from modalidade";
     }
 
     /**
@@ -34,15 +127,15 @@ public class Modalidade extends javax.swing.JFrame {
 
         buttonListar = new javax.swing.JButton();
         buttonRemover = new javax.swing.JButton();
-        Inseributtonr = new javax.swing.JButton();
+        buttonInserir = new javax.swing.JButton();
         buttonAtualizar = new javax.swing.JButton();
         paneModalidade = new javax.swing.JScrollPane();
         labelNome = new javax.swing.JLabel();
         textFieldNome = new javax.swing.JTextField();
-        labelNome1 = new javax.swing.JLabel();
+        labelNumMax = new javax.swing.JLabel();
         textFieldCategoria = new javax.swing.JTextField();
-        labelNome2 = new javax.swing.JLabel();
-        labelNome3 = new javax.swing.JLabel();
+        labelCategoria = new javax.swing.JLabel();
+        labelEsporte = new javax.swing.JLabel();
         textFieldMax = new javax.swing.JTextField();
         paneEsporte = new javax.swing.JScrollPane();
 
@@ -64,11 +157,11 @@ public class Modalidade extends javax.swing.JFrame {
             }
         });
 
-        Inseributtonr.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        Inseributtonr.setText("Inserir");
-        Inseributtonr.addActionListener(new java.awt.event.ActionListener() {
+        buttonInserir.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
+        buttonInserir.setText("Inserir");
+        buttonInserir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InseributtonrActionPerformed(evt);
+                buttonInserirActionPerformed(evt);
             }
         });
 
@@ -90,8 +183,8 @@ public class Modalidade extends javax.swing.JFrame {
             }
         });
 
-        labelNome1.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelNome1.setText("Número máximo de atletas:");
+        labelNumMax.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
+        labelNumMax.setText("Número máximo de atletas:");
 
         textFieldCategoria.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldCategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -100,11 +193,11 @@ public class Modalidade extends javax.swing.JFrame {
             }
         });
 
-        labelNome2.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelNome2.setText("Categoria:");
+        labelCategoria.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
+        labelCategoria.setText("Categoria:");
 
-        labelNome3.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelNome3.setText("Esporte:");
+        labelEsporte.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
+        labelEsporte.setText("Esporte:");
 
         textFieldMax.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldMax.addActionListener(new java.awt.event.ActionListener() {
@@ -112,6 +205,8 @@ public class Modalidade extends javax.swing.JFrame {
                 textFieldMaxActionPerformed(evt);
             }
         });
+
+        paneEsporte.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,9 +225,9 @@ public class Modalidade extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelNome)
-                                    .addComponent(labelNome3)
-                                    .addComponent(labelNome2)
-                                    .addComponent(labelNome1))
+                                    .addComponent(labelEsporte)
+                                    .addComponent(labelCategoria)
+                                    .addComponent(labelNumMax))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(paneEsporte)))
                     .addGroup(layout.createSequentialGroup()
@@ -140,7 +235,7 @@ public class Modalidade extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Inseributtonr, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -156,15 +251,15 @@ public class Modalidade extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelNome1)
+                        .addComponent(labelNumMax)
                         .addGap(11, 11, 11)
                         .addComponent(textFieldMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelNome2)
+                        .addComponent(labelCategoria)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textFieldCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelNome3)
+                        .addComponent(labelEsporte)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(paneEsporte, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
                     .addComponent(paneModalidade))
@@ -172,7 +267,7 @@ public class Modalidade extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonListar)
                     .addComponent(buttonRemover)
-                    .addComponent(Inseributtonr)
+                    .addComponent(buttonInserir)
                     .addComponent(buttonAtualizar))
                 .addContainerGap())
         );
@@ -185,12 +280,12 @@ public class Modalidade extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoverActionPerformed
 
     private void buttonListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonListarActionPerformed
-        // TODO add your handling code here:
+        loadModalidade();
     }//GEN-LAST:event_buttonListarActionPerformed
 
-    private void InseributtonrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InseributtonrActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_InseributtonrActionPerformed
+    private void buttonInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInserirActionPerformed
+        System.err.println("selected row: " + tableEsporte.getSelectedRow());
+    }//GEN-LAST:event_buttonInserirActionPerformed
 
     private void buttonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtualizarActionPerformed
         // TODO add your handling code here:
@@ -209,14 +304,14 @@ public class Modalidade extends javax.swing.JFrame {
     }//GEN-LAST:event_textFieldMaxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Inseributtonr;
     private javax.swing.JButton buttonAtualizar;
+    private javax.swing.JButton buttonInserir;
     private javax.swing.JButton buttonListar;
     private javax.swing.JButton buttonRemover;
+    private javax.swing.JLabel labelCategoria;
+    private javax.swing.JLabel labelEsporte;
     private javax.swing.JLabel labelNome;
-    private javax.swing.JLabel labelNome1;
-    private javax.swing.JLabel labelNome2;
-    private javax.swing.JLabel labelNome3;
+    private javax.swing.JLabel labelNumMax;
     private javax.swing.JScrollPane paneEsporte;
     private javax.swing.JScrollPane paneModalidade;
     private javax.swing.JTextField textFieldCategoria;

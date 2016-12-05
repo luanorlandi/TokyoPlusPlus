@@ -58,7 +58,7 @@ public class Interface extends javax.swing.JFrame {
         });
         jMenuBar1.add(menuModalidade);
 
-        menuListarAtleta.setText("Listar Atletas");
+        menuListarAtleta.setText("Relatório de atletas");
         menuListarAtleta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menuListarAtleta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -107,7 +107,11 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuModalidadeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuModalidadeMousePressed
-        new Modalidade().setVisible(true);
+        Modalidade modalidade;
+        modalidade = new Modalidade();
+        
+        modalidade.setVisible(true);
+        modalidade.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_menuModalidadeMousePressed
 
     private void menuListarAtletaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuListarAtletaMousePressed

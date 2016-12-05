@@ -19,17 +19,20 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
+        /*try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             Connection connection = DriverManager.getConnection(
                     "jdbc:oracle:thin:@192.168.183.15:1521:orcl",
-                    "8531532",
+                    "8077925",
                     "a");
-            System.out.println("Connected");
+            System.err.println("Connected");
             Statement stmt = connection.createStatement();
         } catch (Exception ex) {
-            System.out.println("Fail to connect: " + ex.getMessage());
-        }
+            System.err.println("Fail to connect: " + ex.getMessage());
+        }*/
+        
+        DatabaseConnection d = DatabaseConnection.getInstance();
+        d.getStatement();
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
