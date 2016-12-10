@@ -16,57 +16,101 @@ import java.sql.Statement;
  */
 public class DatabaseConnection {
 
-    private static DatabaseConnection connection;
+    private static DatabaseConnection databaseConnection;
     
-    private String ip = "192.168.183.15";
-    private String port = "1521";
-    private String sid = "orcl";
-    private String username = "8077925";
-    private String password = "a";
+    private String ip;
+    private String port;
+    private String sid;
+    private String username;
+    private String password;
     
     private DatabaseConnection() {
-        
+        ip = "192.168.183.15";
+        port = "1521";
+        sid = "orcl";
+        username = "8077925";
+        password = "a";
     }
     
     public static DatabaseConnection getInstance() {
-        if(connection == null) {
-            connection = new DatabaseConnection();
+        if(databaseConnection == null) {
+            databaseConnection = new DatabaseConnection();
         }
         
-        return connection;
+        return databaseConnection;
     }
     
-    public Statement getStatement() {
-        Statement statement = null;
-        
+    public Statement getStatement() throws SQLException {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
-            java.sql.Connection connection = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@" + ip + ":" + port + ":" + sid,
-                    username, password);
-            
-            System.err.println("Connected to: "
-                    + "jdbc:oracle:thin:@" + ip + ":" + port + ":" + sid
-                    + "\nUsername: " + username + "\n");
-            
-            statement = connection.createStatement();
-        } catch (Exception ex) {
-            System.err.println("Fail to connect: " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.err.println("Get statement fail: " + ex.getMessage());
         }
         
-        return statement;
+        java.sql.Connection connection = DriverManager.getConnection(
+                "jdbc:oracle:thin:@" + ip + ":" + port + ":" + sid,
+                username, password);
+
+        //showConnection();
+
+        return connection.createStatement();
     }
     
-    public ResultSet select(String script) {
+    public void showConnection() {
+        System.err.println("Connected to: "
+                    + "jdbc:oracle:thin:@" + ip + ":" + port + ":" + sid
+                    + "\nUsername: " + username + "\n");
+    }
+    
+    public ResultSet select(String script) throws SQLException {
         Statement statement = DatabaseConnection.getInstance().getStatement();
-        ResultSet resultSet = null;
         
-        try {
-            resultSet = statement.executeQuery(script);
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-        }
+        return statement.executeQuery(script);
+    }
+    
+    public void insertUpdateDelete(String script) throws SQLException {
+        Statement statement = DatabaseConnection.getInstance().getStatement();
         
-        return resultSet;
+        statement.executeUpdate(script);
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

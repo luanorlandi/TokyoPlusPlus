@@ -5,9 +5,9 @@
  */
 package tokyo;
 
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -18,8 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Modalidade extends javax.swing.JFrame {
 
-    JTable tableEsporte = new javax.swing.JTable();
-    JTable tableModalidade = new javax.swing.JTable();
+    private JTable tableEsporte = new javax.swing.JTable();
+    private JTable tableModalidade = new javax.swing.JTable();
     
     /**
      * Creates new form Modalidade
@@ -27,13 +27,18 @@ public class Modalidade extends javax.swing.JFrame {
     public Modalidade() {
         initComponents();
         this.setTitle("Tokyo++ - Modalidade");
-        this.setIconImage(new ImageIcon(getClass().getResource("/img/japan.png")).getImage()); 
+        this.setIconImage(new ImageIcon(getClass()
+                .getResource("/img/japan.png"))
+                .getImage()); 
         this.setLocationRelativeTo(null);
         
-        loadEsporte();
+        labelSuccess.setVisible(false);
+        
+        selectModalidade();
+        selectEsporte();
     }
     
-    private void loadEsporte() {
+    private void selectEsporte() {
         paneEsporte.setViewportView(tableEsporte);
         tableEsporte.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
@@ -52,7 +57,7 @@ public class Modalidade extends javax.swing.JFrame {
         try {
             ResultSet resultSet = DatabaseConnection
                     .getInstance()
-                    .select(scriptEsporte());
+                    .select(scriptSelectEsporte());
                     
             DefaultTableModel model = (DefaultTableModel) tableEsporte.getModel();
             
@@ -61,20 +66,20 @@ public class Modalidade extends javax.swing.JFrame {
                     resultSet.getString("nomeEsporte"),
                     resultSet.getString("unidade")});
             }
-        } catch (SQLException ex) {
+        } catch(SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
     
-    private void loadModalidade() {
+    private void selectModalidade() {
         paneModalidade.setViewportView(tableModalidade);
         tableModalidade.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Nome da Modalidade",
-                    "Nº máx. de Atletas",
+                    "Modalidade",
+                    "N° máx atletas",
                     "Categoria",
-                    "Nome do Esporte"
+                    "Esporte"
                 }
         ) {
             Class[] types = new Class[]{
@@ -88,7 +93,7 @@ public class Modalidade extends javax.swing.JFrame {
         try {
             ResultSet resultSet = DatabaseConnection
                     .getInstance()
-                    .select(scriptModalidadeListar());
+                    .select(scriptSelectModalidade());
                     
             DefaultTableModel model = (DefaultTableModel) tableModalidade.getModel();
             
@@ -99,23 +104,157 @@ public class Modalidade extends javax.swing.JFrame {
                     resultSet.getString("categoria"),
                     resultSet.getString("nomeEsporte")});
             }
-        } catch (SQLException ex) {
+        } catch(SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
     
-    private String scriptEsporte() {
-        return
-                "select * "
+    private void insertModalidade() {
+        try {
+            String nomeModalidade = textFieldNome.getText();
+            String numeroMaximoAtletas = textFieldMax.getText();
+            String categoria = comboCategoria.getSelectedItem().toString();
+            String nomeEsporte = (String) tableEsporte.getModel()
+                    .getValueAt(tableEsporte.getSelectedRow(), 0);
+            
+            if(nomeModalidade.isEmpty() || numeroMaximoAtletas.isEmpty()) {
+                labelSuccess.setText("Insira um nome e número máximo de atletas");
+                labelSuccess.setForeground(Color.ORANGE);
+                labelSuccess.setVisible(true);
+                
+                return;
+            }
+            
+            DatabaseConnection
+                    .getInstance()
+                    .insertUpdateDelete(scriptInsertModalidade(
+                            nomeModalidade,
+                            numeroMaximoAtletas,
+                            categoria,
+                            nomeEsporte));
+            
+            labelSuccess.setText("Modalidade inserida");
+            labelSuccess.setForeground(Color.BLUE);
+            labelSuccess.setVisible(true);
+        } catch(SQLException ex) {
+            System.err.println(ex.getMessage());
+            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setForeground(Color.RED);
+            labelSuccess.setVisible(true);
+        } catch(ArrayIndexOutOfBoundsException ex) {
+            labelSuccess.setText("Selecione uma linha na tabela esporte");
+            labelSuccess.setForeground(Color.ORANGE);
+            labelSuccess.setVisible(true);
+        }
+    }
+    
+    private void updateModalidade() {
+        try {
+            String nomeModalidade = textFieldNome.getText();
+            String numeroMaximoAtletas = textFieldMax.getText();
+            String categoria = comboCategoria.getSelectedItem().toString();
+            String nomeEsporte = (String) tableEsporte.getModel()
+                    .getValueAt(tableEsporte.getSelectedRow(), 0);
+            
+            if(nomeModalidade.isEmpty() || numeroMaximoAtletas.isEmpty()) {
+                labelSuccess.setText("Insira um nome e número máximo de atletas");
+                labelSuccess.setForeground(Color.ORANGE);
+                labelSuccess.setVisible(true);
+                
+                return;
+            }
+            
+            DatabaseConnection
+                    .getInstance()
+                    .insertUpdateDelete(scriptUpdateModalidade(
+                            nomeModalidade,
+                            numeroMaximoAtletas,
+                            categoria,
+                            nomeEsporte));
+            
+            labelSuccess.setText("Modalidade atualizada");
+            labelSuccess.setForeground(Color.BLUE);
+            labelSuccess.setVisible(true);
+        } catch(SQLException ex) {
+            System.err.println(ex.getMessage());
+            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setForeground(Color.RED);
+            labelSuccess.setVisible(true);
+        } catch(ArrayIndexOutOfBoundsException ex) {
+            labelSuccess.setText("Selecione uma linha na tabela esporte");
+            labelSuccess.setForeground(Color.ORANGE);
+            labelSuccess.setVisible(true);
+        }
+    }
+    
+    private void deleteModalidade() {
+        try {
+            String nomeModalidade = (String) tableModalidade.getModel()
+                    .getValueAt(tableModalidade.getSelectedRow(), 0);
+            String nomeEsporte = (String) tableModalidade.getModel()
+                    .getValueAt(tableModalidade.getSelectedRow(), 3);
+            
+            DatabaseConnection
+                    .getInstance()
+                    .insertUpdateDelete(scriptDeleteModalidade(
+                            nomeModalidade,
+                            nomeEsporte));
+            
+            labelSuccess.setText("Modalidade deletada");
+            labelSuccess.setForeground(Color.BLUE);
+            labelSuccess.setVisible(true);
+        } catch(SQLException ex) {
+            System.err.println(ex.getMessage());
+            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setForeground(Color.RED);
+            labelSuccess.setVisible(true);
+        } catch(ArrayIndexOutOfBoundsException ex) {
+            labelSuccess.setText("Selecione uma linha na tabela modalidade");
+            labelSuccess.setForeground(Color.ORANGE);
+            labelSuccess.setVisible(true);
+        }
+    }
+    
+    private String scriptSelectEsporte() {
+        return "select * "
                 + "from esporte";
     }
     
-    private String scriptModalidadeListar() {
-        return
-                "select * "
+    private String scriptSelectModalidade() {
+        return "select * "
                 + "from modalidade";
     }
+    
+    private String scriptInsertModalidade(String nomeModalidade,
+            String numeroMaximoAtletas, String categoria, String nomeEsporte) {
+        
+        return "insert into modalidade "
+                + "(nomeModalidade, numeroMaximoAtletas, categoria, nomeEsporte) "
+                + "values "
+                + "('" + nomeModalidade + "', "
+                + numeroMaximoAtletas + ", "
+                + "'" + categoria + "', "
+                + "'" + nomeEsporte + "')";
+    }
 
+    private String scriptUpdateModalidade(String nomeModalidade,
+            String numeroMaximoAtletas, String categoria, String nomeEsporte) {
+        
+        return "update modalidade "
+                + "set numeroMaximoAtletas = " + numeroMaximoAtletas + ", "
+                + "categoria = '" + categoria + "', "
+                + "nomeEsporte = '" + nomeEsporte + "' "
+                + "where nomeModalidade = '" + nomeModalidade + "'";
+    }
+
+    private String scriptDeleteModalidade(String nomeModalidade,
+            String nomeEsporte) {
+        
+        return "delete from modalidade "
+                + "where nomeModalidade = '" + nomeModalidade + "' and "
+                + "nomeEsporte = '" + nomeEsporte + "'";
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,29 +264,27 @@ public class Modalidade extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonListar = new javax.swing.JButton();
+        labelSuccess = new javax.swing.JLabel();
         buttonRemover = new javax.swing.JButton();
         buttonInserir = new javax.swing.JButton();
         buttonAtualizar = new javax.swing.JButton();
         paneModalidade = new javax.swing.JScrollPane();
+        jPanel = new javax.swing.JPanel();
         labelNome = new javax.swing.JLabel();
         textFieldNome = new javax.swing.JTextField();
         labelNumMax = new javax.swing.JLabel();
-        textFieldCategoria = new javax.swing.JTextField();
         labelCategoria = new javax.swing.JLabel();
         labelEsporte = new javax.swing.JLabel();
         textFieldMax = new javax.swing.JTextField();
         paneEsporte = new javax.swing.JScrollPane();
+        comboCategoria = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        buttonListar.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        buttonListar.setText("Listar");
-        buttonListar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonListarActionPerformed(evt);
-            }
-        });
+        labelSuccess.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
+        labelSuccess.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelSuccess.setText("label ");
+        labelSuccess.setToolTipText("");
 
         buttonRemover.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
         buttonRemover.setText("Remover");
@@ -173,6 +310,31 @@ public class Modalidade extends javax.swing.JFrame {
             }
         });
 
+        paneModalidade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                paneModalidadeMousePressed(evt);
+            }
+        });
+
+        jPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanelMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
+        jPanel.setLayout(jPanelLayout);
+        jPanelLayout.setHorizontalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 463, Short.MAX_VALUE)
+        );
+        jPanelLayout.setVerticalGroup(
+            jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 345, Short.MAX_VALUE)
+        );
+
+        paneModalidade.setViewportView(jPanel);
+
         labelNome.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         labelNome.setText("Nome da modalidade:");
 
@@ -185,13 +347,6 @@ public class Modalidade extends javax.swing.JFrame {
 
         labelNumMax.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         labelNumMax.setText("Número máximo de atletas:");
-
-        textFieldCategoria.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        textFieldCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldCategoriaActionPerformed(evt);
-            }
-        });
 
         labelCategoria.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         labelCategoria.setText("Categoria:");
@@ -208,38 +363,36 @@ public class Modalidade extends javax.swing.JFrame {
 
         paneEsporte.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
 
+        comboCategoria.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
+        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "masculino", "feminino", "misto" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(paneModalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textFieldNome)
-                            .addComponent(textFieldCategoria)
-                            .addComponent(textFieldMax)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelNome)
-                                    .addComponent(labelEsporte)
-                                    .addComponent(labelCategoria)
-                                    .addComponent(labelNumMax))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(paneEsporte)))
+                        .addComponent(paneModalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labelNome, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelEsporte, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelCategoria, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelNumMax, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboCategoria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textFieldMax, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(paneEsporte, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFieldNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)))
+                    .addComponent(labelSuccess, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(buttonListar, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(buttonInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonAtualizar, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)))
+                .addGap(115, 115, 115))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,65 +409,70 @@ public class Modalidade extends javax.swing.JFrame {
                         .addComponent(textFieldMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelCategoria)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
                         .addComponent(labelEsporte)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(paneEsporte, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
-                    .addComponent(paneModalidade))
+                        .addComponent(paneEsporte, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(paneModalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelSuccess)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonListar)
                     .addComponent(buttonRemover)
                     .addComponent(buttonInserir)
                     .addComponent(buttonAtualizar))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoverActionPerformed
-        // TODO add your handling code here:
+        deleteModalidade();
+        selectModalidade();
     }//GEN-LAST:event_buttonRemoverActionPerformed
 
-    private void buttonListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonListarActionPerformed
-        loadModalidade();
-    }//GEN-LAST:event_buttonListarActionPerformed
-
     private void buttonInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInserirActionPerformed
-        System.err.println("selected row: " + tableEsporte.getSelectedRow());
+        insertModalidade();
+        selectModalidade();
     }//GEN-LAST:event_buttonInserirActionPerformed
 
     private void buttonAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAtualizarActionPerformed
-        // TODO add your handling code here:
+        updateModalidade();
+        selectModalidade();
     }//GEN-LAST:event_buttonAtualizarActionPerformed
 
     private void textFieldNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textFieldNomeActionPerformed
 
-    private void textFieldCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldCategoriaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldCategoriaActionPerformed
-
     private void textFieldMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldMaxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textFieldMaxActionPerformed
 
+    private void jPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanelMousePressed
+        
+    }//GEN-LAST:event_jPanelMousePressed
+
+    private void paneModalidadeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_paneModalidadeMousePressed
+        
+    }//GEN-LAST:event_paneModalidadeMousePressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAtualizar;
     private javax.swing.JButton buttonInserir;
-    private javax.swing.JButton buttonListar;
     private javax.swing.JButton buttonRemover;
+    private javax.swing.JComboBox<String> comboCategoria;
+    private javax.swing.JPanel jPanel;
     private javax.swing.JLabel labelCategoria;
     private javax.swing.JLabel labelEsporte;
     private javax.swing.JLabel labelNome;
     private javax.swing.JLabel labelNumMax;
+    private javax.swing.JLabel labelSuccess;
     private javax.swing.JScrollPane paneEsporte;
     private javax.swing.JScrollPane paneModalidade;
-    private javax.swing.JTextField textFieldCategoria;
     private javax.swing.JTextField textFieldMax;
     private javax.swing.JTextField textFieldNome;
     // End of variables declaration//GEN-END:variables

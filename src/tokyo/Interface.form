@@ -2,8 +2,16 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+    <Menu class="javax.swing.JMenuBar" name="jMenuBar">
       <SubComponents>
+        <Menu class="javax.swing.JMenu" name="menuConnection">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Conectar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuConnectionMousePressed"/>
+          </Events>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="menuModalidade">
           <Properties>
             <Property name="text" type="java.lang.String" value="Modalidade"/>
@@ -15,7 +23,7 @@
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuModalidadeMousePressed"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menuListarAtleta">
+        <Menu class="javax.swing.JMenu" name="menuReportAtleta">
           <Properties>
             <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de atletas"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -23,7 +31,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuListarAtletaMousePressed"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuReportAtletaMousePressed"/>
           </Events>
         </Menu>
       </SubComponents>
@@ -33,7 +41,7 @@
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>

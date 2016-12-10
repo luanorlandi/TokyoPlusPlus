@@ -19,7 +19,9 @@ public class Interface extends javax.swing.JFrame {
     public Interface() {
         initComponents();
         this.setTitle("Tokyo++ - Menu");
-        this.setIconImage(new ImageIcon(getClass().getResource("/img/japan.png")).getImage()); 
+        this.setIconImage(new ImageIcon(getClass()
+                .getResource("/img/japan.png"))
+                .getImage()); 
         this.setLocationRelativeTo(null);
     }
 
@@ -35,9 +37,10 @@ public class Interface extends javax.swing.JFrame {
         appText = new javax.swing.JLabel();
         appImg = new javax.swing.JLabel();
         appBackground = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuBar = new javax.swing.JMenuBar();
+        menuConnection = new javax.swing.JMenu();
         menuModalidade = new javax.swing.JMenu();
-        menuListarAtleta = new javax.swing.JMenu();
+        menuReportAtleta = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,6 +52,14 @@ public class Interface extends javax.swing.JFrame {
 
         appBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background.jpg"))); // NOI18N
 
+        menuConnection.setText("Conectar");
+        menuConnection.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuConnectionMousePressed(evt);
+            }
+        });
+        jMenuBar.add(menuConnection);
+
         menuModalidade.setText("Modalidade");
         menuModalidade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menuModalidade.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -56,18 +67,18 @@ public class Interface extends javax.swing.JFrame {
                 menuModalidadeMousePressed(evt);
             }
         });
-        jMenuBar1.add(menuModalidade);
+        jMenuBar.add(menuModalidade);
 
-        menuListarAtleta.setText("Relatório de atletas");
-        menuListarAtleta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        menuListarAtleta.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuReportAtleta.setText("Relatório de atletas");
+        menuReportAtleta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuReportAtleta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                menuListarAtletaMousePressed(evt);
+                menuReportAtletaMousePressed(evt);
             }
         });
-        jMenuBar1.add(menuListarAtleta);
+        jMenuBar.add(menuReportAtleta);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,17 +125,29 @@ public class Interface extends javax.swing.JFrame {
         modalidade.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }//GEN-LAST:event_menuModalidadeMousePressed
 
-    private void menuListarAtletaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuListarAtletaMousePressed
-        //new Relatorio().setVisible(true);
-    }//GEN-LAST:event_menuListarAtletaMousePressed
+    private void menuReportAtletaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuReportAtletaMousePressed
+        Report report;
+        report = new Report();
+        
+        report.setVisible(true);
+        report.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }//GEN-LAST:event_menuReportAtletaMousePressed
 
+    private void menuConnectionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuConnectionMousePressed
+        Connection connection;
+        connection = new Connection();
+        
+        connection.setVisible(true);
+        connection.setDefaultCloseOperation(HIDE_ON_CLOSE);
+    }//GEN-LAST:event_menuConnectionMousePressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel appBackground;
     private javax.swing.JLabel appImg;
     private javax.swing.JLabel appText;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu menuListarAtleta;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenu menuConnection;
     private javax.swing.JMenu menuModalidade;
+    private javax.swing.JMenu menuReportAtleta;
     // End of variables declaration//GEN-END:variables
 }
