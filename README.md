@@ -2,7 +2,7 @@
 
 Tokyo++ is an application to study Database systems, it was made in the final project in the course of Database.
 
-It features an fictional server for the Tokyo 2020 Olympics.
+It features a fictional server for the Tokyo 2020 Olympics.
 
 ![Screenshot 1](img/menu.png)
 
