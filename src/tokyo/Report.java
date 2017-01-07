@@ -23,18 +23,18 @@ import pdf.PDFgenerator;
  */
 public class Report extends javax.swing.JFrame {
     
-    private JTable tableAtleta = new javax.swing.JTable();
+    private JTable tableAthlete=  new javax.swing.JTable();
     
     private PDFgenerator pdf;
     
-    private static final String reportAtletaPath = ".\\atleta.pdf";
+    private static final String reportAthletePath = ".\\athlete.pdf";
 
     /**
      * Creates new form Report
      */
     public Report() {
         initComponents();
-        this.setTitle("Tokyo++ - Relatório de atletas");
+        this.setTitle("Tokyo++ - Athlete report");
         this.setIconImage(new ImageIcon(getClass()
                 .getResource("/img/japan.png"))
                 .getImage()); 
@@ -48,11 +48,11 @@ public class Report extends javax.swing.JFrame {
     }
     
     private void loadAtleta() {
-        paneAtleta.setViewportView(tableAtleta);
-        tableAtleta.setModel(new javax.swing.table.DefaultTableModel(
+        paneAtleta.setViewportView(tableAthlete);
+        tableAthlete.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Código", "Nome do atleta", "Quantidade de jogos"
+                    "ID", "Athlete name", "Matches played"
                 }
         ) {
             Class[] types = new Class[]{
@@ -68,7 +68,7 @@ public class Report extends javax.swing.JFrame {
                     .getInstance()
                     .select(scriptAtleta());
                     
-            DefaultTableModel model = (DefaultTableModel) tableAtleta.getModel();
+            DefaultTableModel model = (DefaultTableModel) tableAthlete.getModel();
             
             while (resultSet.next()) {
                 model.addRow(new Object[]{
@@ -156,10 +156,10 @@ public class Report extends javax.swing.JFrame {
 
         labelReportAtleta.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 11)); // NOI18N
         labelReportAtleta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelReportAtleta.setText("Todos os atletas que já participaram de três ou mais jogos distintos juntamente com o número total de jogos que participaram");
+        labelReportAtleta.setText("All athletes that participated in three or more distinct matches, with the total number of matches played");
 
         buttonPdf.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        buttonPdf.setText("Gerar PDF");
+        buttonPdf.setText("Generate PDF");
         buttonPdf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonPdfActionPerformed(evt);
@@ -203,7 +203,7 @@ public class Report extends javax.swing.JFrame {
 
     private void buttonPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPdfActionPerformed
         try {
-            pdf.newFile(reportAtletaPath);
+            pdf.newFile(reportAthletePath);
             
             /* get system date */
             String schedule = new SimpleDateFormat("HH:mm:ss")
@@ -213,21 +213,21 @@ public class Report extends javax.swing.JFrame {
             
             pdf.insertParagraph(labelReportAtleta.getText() + ".");
             
-            pdf.insertParagraph("Gerado as " + schedule + " em " + date + ".");
+            pdf.insertParagraph("Generated at " + schedule + " - " + date + ".");
             pdf.insertParagraph(" ");
             
-            insertTable(tableAtleta);
+            insertTable(tableAthlete);
             
             pdf.closeFile();
             
-            pdf.readFile(reportAtletaPath);
+            pdf.readFile(reportAthletePath);
             
-            labelSuccess.setText("Relatório gerado em " + reportAtletaPath);
+            labelSuccess.setText("Report file created in " + reportAthletePath);
             labelSuccess.setForeground(Color.BLUE);
             labelSuccess.setVisible(true);
         } catch(DocumentException | IOException ex) {
             System.err.println(ex.getMessage());
-            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setText("Fail: " + ex.getMessage());
             labelSuccess.setForeground(Color.RED);
             labelSuccess.setVisible(true);
         }

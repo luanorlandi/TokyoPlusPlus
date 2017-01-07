@@ -20,7 +20,7 @@ public class Connection extends javax.swing.JFrame {
      */
     public Connection() {
         initComponents();
-        this.setTitle("Tokyo++ - Conectar");
+        this.setTitle("Tokyo++ - Connect");
         this.setIconImage(new ImageIcon(getClass()
                 .getResource("/img/japan.png"))
                 .getImage()); 
@@ -68,7 +68,7 @@ public class Connection extends javax.swing.JFrame {
         textFieldIp.setText("jTextField1");
 
         labelPort.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelPort.setText("Porta");
+        labelPort.setText("Port");
 
         textFieldPort.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldPort.setText("jTextField1");
@@ -80,13 +80,13 @@ public class Connection extends javax.swing.JFrame {
         textFieldSid.setText("jTextField1");
 
         labelUsername.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelUsername.setText("Usuário");
+        labelUsername.setText("Username");
 
         textFieldUsername.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldUsername.setText("jTextField1");
 
         labelPassword.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelPassword.setText("Senha");
+        labelPassword.setText("Password");
 
         textFieldPassword.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldPassword.setText("jTextField1");
@@ -96,7 +96,7 @@ public class Connection extends javax.swing.JFrame {
         labelSuccess.setText("label");
 
         buttonConnect.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        buttonConnect.setText("Conectar");
+        buttonConnect.setText("Connect");
         buttonConnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonConnectActionPerformed(evt);
@@ -174,12 +174,12 @@ public class Connection extends javax.swing.JFrame {
         try {
             databaseConnection.getStatement();
             
-            labelSuccess.setText("Conexão realizada com sucesso");
+            labelSuccess.setText("Connection made with success!");
             labelSuccess.setForeground(Color.BLUE);
             labelSuccess.setVisible(true);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setText("Fail: " + ex.getMessage());
             labelSuccess.setForeground(Color.RED);
             labelSuccess.setVisible(true);
         }

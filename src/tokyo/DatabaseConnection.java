@@ -25,11 +25,11 @@ public class DatabaseConnection {
     private String password;
     
     private DatabaseConnection() {
-        ip = "192.168.183.15";
-        port = "1521";
+        ip = "grad.icmc.usp.br";
+        port = "15215";
         sid = "orcl";
         username = "8077925";
-        password = "a";
+        password = "";
     }
     
     public static DatabaseConnection getInstance() {

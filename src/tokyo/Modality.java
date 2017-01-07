@@ -16,17 +16,17 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Orlandi
  */
-public class Modalidade extends javax.swing.JFrame {
+public class Modality extends javax.swing.JFrame {
 
     private JTable tableEsporte = new javax.swing.JTable();
     private JTable tableModalidade = new javax.swing.JTable();
     
     /**
-     * Creates new form Modalidade
+     * Creates new form Modality
      */
-    public Modalidade() {
+    public Modality() {
         initComponents();
-        this.setTitle("Tokyo++ - Modalidade");
+        this.setTitle("Tokyo++ - Modality");
         this.setIconImage(new ImageIcon(getClass()
                 .getResource("/img/japan.png"))
                 .getImage()); 
@@ -43,7 +43,7 @@ public class Modalidade extends javax.swing.JFrame {
         tableEsporte.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Nome do Esporte", "Unidade"
+                    "Sport name", "Unit"
                 }
         ) {
             Class[] types = new Class[]{
@@ -76,10 +76,10 @@ public class Modalidade extends javax.swing.JFrame {
         tableModalidade.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Modalidade",
-                    "N° máx atletas",
-                    "Categoria",
-                    "Esporte"
+                    "Modality",
+                    "Maximum athlete number",
+                    "Category",
+                    "Sport"
                 }
         ) {
             Class[] types = new Class[]{
@@ -118,7 +118,7 @@ public class Modalidade extends javax.swing.JFrame {
                     .getValueAt(tableEsporte.getSelectedRow(), 0);
             
             if(nomeModalidade.isEmpty() || numeroMaximoAtletas.isEmpty()) {
-                labelSuccess.setText("Insira um nome e número máximo de atletas");
+                labelSuccess.setText("Insert a name and maximum number of athletes");
                 labelSuccess.setForeground(Color.ORANGE);
                 labelSuccess.setVisible(true);
                 
@@ -133,16 +133,16 @@ public class Modalidade extends javax.swing.JFrame {
                             categoria,
                             nomeEsporte));
             
-            labelSuccess.setText("Modalidade inserida");
+            labelSuccess.setText("Modality inserted");
             labelSuccess.setForeground(Color.BLUE);
             labelSuccess.setVisible(true);
         } catch(SQLException ex) {
             System.err.println(ex.getMessage());
-            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setText("Fail: " + ex.getMessage());
             labelSuccess.setForeground(Color.RED);
             labelSuccess.setVisible(true);
         } catch(ArrayIndexOutOfBoundsException ex) {
-            labelSuccess.setText("Selecione uma linha na tabela esporte");
+            labelSuccess.setText("Select a row in sport");
             labelSuccess.setForeground(Color.ORANGE);
             labelSuccess.setVisible(true);
         }
@@ -157,7 +157,7 @@ public class Modalidade extends javax.swing.JFrame {
                     .getValueAt(tableEsporte.getSelectedRow(), 0);
             
             if(nomeModalidade.isEmpty() || numeroMaximoAtletas.isEmpty()) {
-                labelSuccess.setText("Insira um nome e número máximo de atletas");
+                labelSuccess.setText("Insert a name and maximum number of athletes");
                 labelSuccess.setForeground(Color.ORANGE);
                 labelSuccess.setVisible(true);
                 
@@ -172,16 +172,16 @@ public class Modalidade extends javax.swing.JFrame {
                             categoria,
                             nomeEsporte));
             
-            labelSuccess.setText("Modalidade atualizada");
+            labelSuccess.setText("Modality updated");
             labelSuccess.setForeground(Color.BLUE);
             labelSuccess.setVisible(true);
         } catch(SQLException ex) {
             System.err.println(ex.getMessage());
-            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setText("Fail: " + ex.getMessage());
             labelSuccess.setForeground(Color.RED);
             labelSuccess.setVisible(true);
         } catch(ArrayIndexOutOfBoundsException ex) {
-            labelSuccess.setText("Selecione uma linha na tabela esporte");
+            labelSuccess.setText("Select a row in sport table");
             labelSuccess.setForeground(Color.ORANGE);
             labelSuccess.setVisible(true);
         }
@@ -200,16 +200,16 @@ public class Modalidade extends javax.swing.JFrame {
                             nomeModalidade,
                             nomeEsporte));
             
-            labelSuccess.setText("Modalidade deletada");
+            labelSuccess.setText("Modality deleted");
             labelSuccess.setForeground(Color.BLUE);
             labelSuccess.setVisible(true);
         } catch(SQLException ex) {
             System.err.println(ex.getMessage());
-            labelSuccess.setText("Falha: " + ex.getMessage());
+            labelSuccess.setText("Fail: " + ex.getMessage());
             labelSuccess.setForeground(Color.RED);
             labelSuccess.setVisible(true);
         } catch(ArrayIndexOutOfBoundsException ex) {
-            labelSuccess.setText("Selecione uma linha na tabela modalidade");
+            labelSuccess.setText("Select a row in modality table");
             labelSuccess.setForeground(Color.ORANGE);
             labelSuccess.setVisible(true);
         }
@@ -287,7 +287,7 @@ public class Modalidade extends javax.swing.JFrame {
         labelSuccess.setToolTipText("");
 
         buttonRemover.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        buttonRemover.setText("Remover");
+        buttonRemover.setText("Remove");
         buttonRemover.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRemoverActionPerformed(evt);
@@ -295,7 +295,7 @@ public class Modalidade extends javax.swing.JFrame {
         });
 
         buttonInserir.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        buttonInserir.setText("Inserir");
+        buttonInserir.setText("Insert");
         buttonInserir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonInserirActionPerformed(evt);
@@ -303,7 +303,7 @@ public class Modalidade extends javax.swing.JFrame {
         });
 
         buttonAtualizar.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 18)); // NOI18N
-        buttonAtualizar.setText("Atualizar");
+        buttonAtualizar.setText("Update");
         buttonAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAtualizarActionPerformed(evt);
@@ -336,7 +336,7 @@ public class Modalidade extends javax.swing.JFrame {
         paneModalidade.setViewportView(jPanel);
 
         labelNome.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelNome.setText("Nome da modalidade:");
+        labelNome.setText("Modality Name");
 
         textFieldNome.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldNome.addActionListener(new java.awt.event.ActionListener() {
@@ -346,13 +346,13 @@ public class Modalidade extends javax.swing.JFrame {
         });
 
         labelNumMax.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelNumMax.setText("Número máximo de atletas:");
+        labelNumMax.setText("Maximum number of Athletes:");
 
         labelCategoria.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelCategoria.setText("Categoria:");
+        labelCategoria.setText("Category:");
 
         labelEsporte.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
-        labelEsporte.setText("Esporte:");
+        labelEsporte.setText("Sport:");
 
         textFieldMax.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 14)); // NOI18N
         textFieldMax.addActionListener(new java.awt.event.ActionListener() {

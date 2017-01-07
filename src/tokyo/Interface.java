@@ -46,13 +46,17 @@ public class Interface extends javax.swing.JFrame {
 
         appText.setFont(new java.awt.Font("Source Sans Pro Semibold", 0, 36)); // NOI18N
         appText.setForeground(new java.awt.Color(153, 153, 153));
+        appText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         appText.setText("TOKYO++");
 
+        appImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         appImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/japan.png"))); // NOI18N
+        appImg.setAlignmentY(0.0F);
+        appImg.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         appBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background.jpg"))); // NOI18N
 
-        menuConnection.setText("Conectar");
+        menuConnection.setText("Connect");
         menuConnection.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 menuConnectionMousePressed(evt);
@@ -60,8 +64,8 @@ public class Interface extends javax.swing.JFrame {
         });
         jMenuBar.add(menuConnection);
 
-        menuModalidade.setText("Modalidade");
-        menuModalidade.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuModalidade.setText("Modality");
+        menuModalidade.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         menuModalidade.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 menuModalidadeMousePressed(evt);
@@ -69,8 +73,8 @@ public class Interface extends javax.swing.JFrame {
         });
         jMenuBar.add(menuModalidade);
 
-        menuReportAtleta.setText("Relatório de atletas");
-        menuReportAtleta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuReportAtleta.setText("Athlete report");
+        menuReportAtleta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         menuReportAtleta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 menuReportAtletaMousePressed(evt);
@@ -85,14 +89,14 @@ public class Interface extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(83, Short.MAX_VALUE)
+                .addContainerGap(86, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(appImg)
-                        .addGap(77, 77, 77))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(appText, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(304, 304, 304))))
+                        .addGap(304, 304, 304))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(appImg)
+                        .addGap(74, 74, 74))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -102,9 +106,9 @@ public class Interface extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addComponent(appImg, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(appText)
                 .addGap(49, 49, 49))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,8 +122,8 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuModalidadeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuModalidadeMousePressed
-        Modalidade modalidade;
-        modalidade = new Modalidade();
+        Modality modalidade;
+        modalidade = new Modality();
         
         modalidade.setVisible(true);
         modalidade.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
